@@ -14,7 +14,7 @@ class Gameboard:
                 self.cells.append(Cell(row, col))
         for cell in self.cells:
             cell.east = self.cells[cell.id - 9 if cell.id % 9 == 0 else cell.id]
-            cell.west = self.cells[cell.id + 9 if cell.id % 9 == 0 else cell.id]  # determine what cell west should be
+            # cell.west = self.cells[cell.id + 9 if cell.id % 9 == 0 else cell.id]  # determine what cell west should be
         self.active_cell = self.cells[0]
 
     def draw(self):
@@ -44,7 +44,7 @@ class Gameboard:
             self.graphics.goto(cell.column_id * 100 + 80, cell.row_id * 100 + 65)
             self.graphics.write(cell.east.id, move=False, align="center", font=("Arial", 8, "normal"))
             self.graphics.goto(cell.column_id * 100 - 80, cell.row_id * 100 - 65)
-            self.graphics.write(cell.west.id, move=False, align="center", font=("Arial", 8, "normal"))# print west neighbor on left side of each square
+            # self.graphics.write(cell.west.id, move=False, align="center", font=("Arial", 8, "normal"))# print west neighbor on left side of each square
         self.screen.update()
 
     def cursor_right(self):
