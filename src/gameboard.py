@@ -14,7 +14,9 @@ class Gameboard:
                 self.cells.append(Cell(row, col))
         for cell in self.cells:
             cell.east = self.cells[cell.id - 8 if (cell.id + 1) % 9 == 0 else cell.id + 1]
-            # cell.west = self.cells[cell.id + 9 if cell.id % 9 == 0 else cell.id]  # determine what cell west should be
+            cell.west = self.cells[cell.id + 8 if cell.id % 9 == 0 else cell.id - 1]
+            cell.north = self.cells[cell.id + 72 if cell.id < 9 else cell.id - 9]
+            cell.south = self.cells[cell.id - 72 if cell.id > 71 else cell.id + 9]
         self.active_cell = self.cells[0]
 
     def draw(self):
@@ -45,8 +47,12 @@ class Gameboard:
             self.graphics.write(cell.id, move=False, align="center", font=("Arial", 12, "normal"))
             self.graphics.goto(cell.column_id * 100 + 180, cell.row_id * 100 + 165)
             self.graphics.write(cell.east.id, move=False, align="center", font=("Arial", 8, "normal"))
-            self.graphics.goto(cell.column_id * 100 - 80, cell.row_id * 100 - 65)
-            # self.graphics.write(cell.west.id, move=False, align="center", font=("Arial", 8, "normal"))# print west neighbor on left side of each square
+            self.graphics.goto(cell.column_id * 100 + 120, cell.row_id * 100 + 165)
+            self.graphics.write(cell.west.id, move=False, align="center", font=("Arial", 8, "normal"))
+            self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 130)
+            self.graphics.write(cell.north.id, move=False, align="center", font=("Arial", 8, "normal"))
+            self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 190)
+            self.graphics.write(cell.south.id, move=False, align="center", font=("Arial", 8, "normal"))
         self.screen.update()
 
     def cursor_right(self):
@@ -55,4 +61,12 @@ class Gameboard:
 
     def cursor_left(self):
         self.active_cell = self.active_cell.west
+        self.draw()
+
+    def cursor_up(self):
+        self.active_cell = self.active_cell.north
+        self.draw()
+
+    def cursor_down(self):
+        self.active_cell = self.active_cell.south
         self.draw()

@@ -10,8 +10,8 @@ game_board.draw()
 print(game_board.cells)
 
 screen.listen()
-# screen.onkey(myFunc, "Up")
-# screen.onkey(myFunc, "Down")
+screen.onkey(game_board.cursor_up, "Up")
+screen.onkey(game_board.cursor_down, "Down")
 screen.onkey(game_board.cursor_left, "Left")
 screen.onkey(game_board.cursor_right, "Right")
 
