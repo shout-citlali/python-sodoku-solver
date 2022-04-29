@@ -10,3 +10,5 @@ class Cell:
         self.column_associations = []
         self.row_associations = []
         self.grid_associations = []
+        self.number = None
+        self.user_defined = False

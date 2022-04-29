@@ -71,14 +71,6 @@ class Gameboard:
         for cell in self.cells:
             self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 165,)
             self.graphics.write(cell.id, move=False, align="center", font=("Arial", 12, "normal"))
-            self.graphics.goto(cell.column_id * 100 + 180, cell.row_id * 100 + 165)
-            self.graphics.write(cell.east.id, move=False, align="center", font=("Arial", 8, "normal"))
-            self.graphics.goto(cell.column_id * 100 + 120, cell.row_id * 100 + 165)
-            self.graphics.write(cell.west.id, move=False, align="center", font=("Arial", 8, "normal"))
-            self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 130)
-            self.graphics.write(cell.north.id, move=False, align="center", font=("Arial", 8, "normal"))
-            self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 190)
-            self.graphics.write(cell.south.id, move=False, align="center", font=("Arial", 8, "normal"))
         self.screen.update()
 
 
@@ -100,3 +92,8 @@ class Gameboard:
     def cursor_down(self):
         self.active_cell = self.active_cell.south
         self.draw()
+
+
+    def input_1(self):
+        self.active_cell.number = 1
+        self.active_cell.user_defined = True
