@@ -7,7 +7,6 @@ screen = Screen()
 game_board = Gameboard(graphics, screen)
 
 game_board.draw()
-print(game_board.cells)
 
 screen.listen()
 screen.onkey(game_board.cursor_up, "Up")

@@ -7,3 +7,6 @@ class Cell:
         self.south = None
         self.east = None
         self.west = None
+        self.column_associations = []
+        self.row_associations = []
+        self.grid_associations = []
