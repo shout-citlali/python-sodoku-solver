@@ -70,7 +70,7 @@ class Gameboard:
 
         for cell in self.cells:
             self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 165,)
-            self.graphics.write(cell.id, move=False, align="center", font=("Arial", 12, "normal"))
+            self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 12, "normal"))
         self.screen.update()
 
 
@@ -97,3 +97,49 @@ class Gameboard:
     def input_1(self):
         self.active_cell.number = 1
         self.active_cell.user_defined = True
+        self.draw()
+
+    def input_2(self):
+        self.active_cell.number = 2
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_3(self):
+        self.active_cell.number = 3
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_4(self):
+        self.active_cell.number = 4
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_5(self):
+        self.active_cell.number = 5
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_6(self):
+        self.active_cell.number = 6
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_7(self):
+        self.active_cell.number = 7
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_8(self):
+        self.active_cell.number = 8
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def input_9(self):
+        self.active_cell.number = 9
+        self.active_cell.user_defined = True
+        self.draw()
+
+    def spacebar(self):
+        self.active_cell.number = None
+        self.active_cell.user_defined = True
+        self.draw()

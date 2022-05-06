@@ -13,8 +13,15 @@ screen.onkey(game_board.cursor_up, "Up")
 screen.onkey(game_board.cursor_down, "Down")
 screen.onkey(game_board.cursor_left, "Left")
 screen.onkey(game_board.cursor_right, "Right")
+screen.onkey(game_board.input_1, "1")
+screen.onkey(game_board.input_2, "2")
+screen.onkey(game_board.input_3, "3")
+screen.onkey(game_board.input_4, "4")
+screen.onkey(game_board.input_5, "5")
+screen.onkey(game_board.input_6, "6")
+screen.onkey(game_board.input_7, "7")
+screen.onkey(game_board.input_8, "8")
+screen.onkey(game_board.input_9, "9")
+screen.onkey(game_board.spacebar, "space")
 
-#  Set up onkey listener for numbers 1 - 9, each needs a function in gameboard. Leverage active cell of gameboard. Space onkey to clear and user_defined = False
-screen.onkey(game_board.input_1, "1")  # check syntax on number. in place of cell id, display cell number (in draw function), make it pretty 
 screen.exitonclick()
-# Test line
