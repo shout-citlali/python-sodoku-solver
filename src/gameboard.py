@@ -69,8 +69,8 @@ class Gameboard:
             self.graphics.color("black")
 
         for cell in self.cells:
-            self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 165,)
-            self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 12, "normal"))
+            self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 195,)
+            self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 40, "normal"))
         self.screen.update()
 
 
