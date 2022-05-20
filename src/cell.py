@@ -11,4 +11,18 @@ class Cell:
         self.row_associations = []
         self.grid_associations = []
         self.number = None
-        self.user_defined = False
+
+    def get_unique_associations(self):
+        unique_associations = self.column_associations + self.row_associations + self.grid_associations
+
+        return list(set(unique_associations))
+
+    def has_conflicts(self):
+        conflict_count = 0
+        for assoc in self.get_unique_associations():
+            if self.number != None and self.number == assoc.number:
+                conflict_count += 1
+            
+        return conflict_count
+
+

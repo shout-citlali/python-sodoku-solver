@@ -29,7 +29,7 @@ class Gameboard:
                 if grid_start_id + (i % 3) + (math.floor(i / 3) * 9) != cell.id:
                     cell.grid_associations.append(self.cells[grid_start_id + (i % 3) + (math.floor(i / 3) * 9)])
         self.active_cell = self.cells[0]
-
+        
 
     def draw(self):
         self.graphics.clear()
@@ -69,8 +69,11 @@ class Gameboard:
             self.graphics.color("black")
 
         for cell in self.cells:
+            if cell.has_conflicts() > 0:
+                self.graphics.color("red")
             self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 195,)
             self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 40, "normal"))
+            self.graphics.color("black")
         self.screen.update()
 
 
@@ -96,50 +99,43 @@ class Gameboard:
 
     def input_1(self):
         self.active_cell.number = 1
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_2(self):
         self.active_cell.number = 2
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_3(self):
         self.active_cell.number = 3
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_4(self):
         self.active_cell.number = 4
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_5(self):
         self.active_cell.number = 5
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_6(self):
         self.active_cell.number = 6
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_7(self):
         self.active_cell.number = 7
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_8(self):
         self.active_cell.number = 8
-        self.active_cell.user_defined = True
         self.draw()
 
     def input_9(self):
         self.active_cell.number = 9
-        self.active_cell.user_defined = True
         self.draw()
 
     def spacebar(self):
         self.active_cell.number = None
-        self.active_cell.user_defined = True
         self.draw()
+
+    def enter(self):
+        print("Unable to solve puzzle")

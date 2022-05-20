@@ -23,5 +23,6 @@ screen.onkey(game_board.input_7, "7")
 screen.onkey(game_board.input_8, "8")
 screen.onkey(game_board.input_9, "9")
 screen.onkey(game_board.spacebar, "space")
+screen.onkey(game_board.enter, "Return")
 
 screen.exitonclick()
