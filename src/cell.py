@@ -14,9 +14,11 @@ class Cell:
         self.user_defined = False
         self.possibilities = []
 
+
     def get_unique_associations(self):
         unique_associations = self.column_associations + self.row_associations + self.grid_associations
         return list(set(unique_associations))
+
 
     def has_conflicts(self):
         conflict_count = 0
