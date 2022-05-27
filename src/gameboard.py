@@ -1,5 +1,7 @@
-from cell import Cell
 import math
+from cell import Cell
+from solver import Solver
+
 
 
 class Gameboard:
@@ -71,6 +73,8 @@ class Gameboard:
         for cell in self.cells:
             if cell.has_conflicts() > 0:
                 self.graphics.color("red")
+            elif cell.user_defined:
+                self.graphics.color("green")
             self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 195,)
             self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 40, "normal"))
             self.graphics.color("black")
@@ -148,16 +152,19 @@ class Gameboard:
         self.draw()
 
     def enter(self):
-        for cell in self.cells:
-            self.graphics.goto(570, 90)
-            self.graphics.color("red")            
-            if cell.has_conflicts() > 0:                
-                self.graphics.write("Unable to solve puzzle due to conflicts", move=False, align="center", font=("Arial", 28, "normal"))
-                self.graphics.color("black")
-                break
-            elif cell.has_conflicts() == 0: # and if puzzle is full? 
-                self.graphics.write("Unable to solve puzzle", move=False, align="center", font=("Arial", 28, "normal")) 
-                self.graphics.color("black")
+        solver = Solver(self.cells)
+        solution = solver.solve()
+        self.draw()
+        # for cell in self.cells:
+        #     self.graphics.goto(570, 90)
+        #     self.graphics.color("red")            
+        #     if cell.has_conflicts() > 0:                
+        #         self.graphics.write("Unable to solve puzzle due to conflicts", move=False, align="center", font=("Arial", 28, "normal"))
+        #         self.graphics.color("black")
+        #         break
+        #     elif cell.has_conflicts() == 0: # and if puzzle is full? 
+        #         self.graphics.write("Unable to solve puzzle", move=False, align="center", font=("Arial", 28, "normal")) 
+        #         self.graphics.color("black")
 
     def performSetup(self, config):
         for i, c in enumerate(config):
@@ -166,7 +173,7 @@ class Gameboard:
                 self.cells[i].user_defined = True
 
 
-    def gentleSetup(self):
+    def gentle_setup(self):
         setup = [
             4, None, 1, None, 5, None, 6, None, 3,
             None, 2, None, 1, None, 7, None, 4, 5,
@@ -180,7 +187,7 @@ class Gameboard:
         ]
         self.performSetup(setup)
 
-    def easySetup(self):
+    def easy_setup(self):
         setup = [
             None, None, None, 5, None, 4, 7, None, None,
             None, None, None, 3, 9, 6, 2, None, None,
@@ -194,7 +201,7 @@ class Gameboard:
         ]
         self.performSetup(setup)
 
-    def MediumSetup(self):
+    def medium_setup(self):
         setup = [
             None, None, None, None, 1, None, None, 3, 8,
             None, None, 7, 4, None, None, None, None, None,
