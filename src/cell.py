@@ -1,8 +1,11 @@
+import math
+
 class Cell:
     def __init__(self, row_id, column_id):
         self.id = row_id * 9 + column_id
         self.row_id = row_id
         self.column_id = column_id
+        self.grid_id = (math.floor(row_id / 3) * 3) + math.floor(column_id / 3)
         self.north = None
         self.south = None
         self.east = None
