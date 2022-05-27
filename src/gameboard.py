@@ -138,4 +138,13 @@ class Gameboard:
         self.draw()
 
     def enter(self):
-        print("Unable to solve puzzle")
+        for cell in self.cells:
+            self.graphics.goto(570, 90)
+            self.graphics.color("red")            
+            if cell.has_conflicts() > 0:                
+                self.graphics.write("Unable to solve puzzle due to conflicts", move=False, align="center", font=("Arial", 28, "normal"))
+                self.graphics.color("black")
+                break
+            elif cell.has_conflicts() == 0: # and if puzzle is full? 
+                self.graphics.write("Unable to solve puzzle", move=False, align="center", font=("Arial", 28, "normal")) 
+                self.graphics.color("black")
