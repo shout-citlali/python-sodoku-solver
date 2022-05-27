@@ -53,6 +53,49 @@ class Solver:
           for col_cell in self.get_col_list_by_seed(possibility_cols[0]):
             if col_cell.grid_id != grid_seed and num in col_cell.possibilities:
               col_cell.possibilities.remove(num)
+  
+
+  def find_matched_pair(self, cells):
+    matched_pair = None
+    for cell in cells:
+      if matched_pair is not None:
+        break
+      for comp_cell in cells:
+        if matched_pair is not None:
+          break
+        if cell.id != comp_cell.id and len(cell.possibilities) == 2 and cell.possibilities == comp_cell.possibilities:
+          matched_pair = (cell, comp_cell)
+    return matched_pair
+
+
+  def process_matched_pair_associations(self, matched_pair, associations):
+    elimination_possibilities = matched_pair[0].possibilities
+    for cell in associations:
+      if cell.id != matched_pair[0].id and cell.id != matched_pair[1].id:
+        for possibility in elimination_possibilities:
+          if possibility in cell.possibilities:
+            cell.possibilities.remove(possibility)
+
+
+  def eliminate_matched_pair_association_possibilities(self):
+    for seed in range(0, 9): # Loop through rows, cols, and grids
+      matched_pair = None
+      row_cells = self.get_row_list_by_seed(seed)
+      matched_pair = self.find_matched_pair(row_cells)
+      if matched_pair is not None:
+        self.process_matched_pair_associations(matched_pair, row_cells)
+
+      matched_pair = None
+      col_cells = self.get_col_list_by_seed(seed)
+      matched_pair = self.find_matched_pair(col_cells)
+      if matched_pair is not None:
+        self.process_matched_pair_associations(matched_pair, col_cells)
+
+      matched_pair = None
+      grid_cells = self.get_grid_list_by_seed(seed)
+      matched_pair = self.find_matched_pair(grid_cells)
+      if matched_pair is not None:
+        self.process_matched_pair_associations(matched_pair, grid_cells)
 
 
   def determine_cell_possibilities(self):
@@ -68,12 +111,11 @@ class Solver:
         cell.possibilities = candidates
     while True:
       prelim_possibilities_count = self.get_total_possibilities_count()
-      print(prelim_possibilities_count)
       self.eliminate_skewered_possibilities()
+      self.eliminate_matched_pair_association_possibilities()
       has_changed = prelim_possibilities_count > self.get_total_possibilities_count()
       if not has_changed or prelim_possibilities_count == 0:
           break
-
 
 
   def assign_cells_having_single_possibility(self):
@@ -90,14 +132,10 @@ class Solver:
     return empty
 
 
-
-
-
   def determine_single_option_in_row_for_number(self):
     for row_seed in range(0, 9): # Loop through each row
       for num in range(1, 10):     # Loop through each number 1-9
         options = []
-        print()
         for cell in self.get_row_list_by_seed(row_seed): # Loop through each cell in the row testing for the number
           if num in cell.possibilities:
             options.append(cell)
@@ -141,7 +179,6 @@ class Solver:
       has_changed = prelim_empty_cells > self.get_empty_cell_count()
       if not has_changed or self.get_empty_cell_count() == 0:
           break
-
-    return self.get_empty_cell_count() == 0
+    return (self.get_empty_cell_count(), self.get_total_possibilities_count())
 
       

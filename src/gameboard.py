@@ -12,6 +12,8 @@ class Gameboard:
         self.screen.tracer(0)
         self.cells = []
         self.error_message = None
+        self.empty_cells = None
+        self.possibilities = None
         for row in range(0, 9):
             for col in range(0, 9):
                 self.cells.append(Cell(row, col))
@@ -98,6 +100,12 @@ class Gameboard:
             self.graphics.color("red")
             self.graphics.write(self.error_message, move=False, align="center", font=("Arial", 28, "normal"))
             self.graphics.color("black")
+        # if self.empty_cells is not None:
+        #     self.graphics.goto(10, 20)
+        #     self.graphics.write(f"Empty Cells: {self.empty_cells}", move=False, align="left", font=("Arial", 18, "normal"))
+        #     self.graphics.goto(10, 40)
+        #     self.graphics.write(f"Possibilities: {self.possibilities}", move=False, align="left", font=("Arial", 18, "normal"))
+
         self.screen.update()
 
 
@@ -197,8 +205,10 @@ class Gameboard:
             self.error_message = "Unable to solve puzzle due to conflicts"
         else:
             solver = Solver(self.cells)
-            solved = solver.solve()
-            if not solved:
+            empty_cells, possibilities = solver.solve()
+            self.empty_cells = empty_cells
+            self.possibilities = possibilities
+            if empty_cells != 0:
                 self.error_message = "Unable to solve puzzle"
         self.draw()
 
@@ -294,6 +304,21 @@ class Gameboard:
             5, None, 7, None, None, None, 4, None, None,
             None, None, None, 3, None, 2, None, None, None,
             1, None, None, None, None, None, None, None, None,
+        ]
+        self.performSetup(setup)
+
+
+    def impossible_setup(self):
+        setup = [
+            4, None, None, None, 3, None, None, None, None,
+            None, None, None, 6, None, None, 8, None, None,
+            None, None, None, None, None, None, None, None, 1,
+            None, None, None, None, 5, None, None, 9, None,
+            None, 8, None, None, None, None, 6, None, None,
+            None, 7, None, 2, None, None, None, None, None,
+            None, None, None, 1, None, 2, 7, None, None,
+            5, None, 3, None, None, None, None, 4, None,
+            9, None, None, None, None, None, None, None, None,
         ]
         self.performSetup(setup)
 
