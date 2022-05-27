@@ -6,10 +6,9 @@ graphics = Turtle()
 screen = Screen()
 game_board = Gameboard(graphics, screen)
 
-game_board.MediumSetup()
+game_board.easy_setup()
 
 game_board.draw()
-
 
 screen.listen()
 screen.onkey(game_board.cursor_up, "Up")
