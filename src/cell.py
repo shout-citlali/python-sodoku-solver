@@ -11,6 +11,7 @@ class Cell:
         self.row_associations = []
         self.grid_associations = []
         self.number = None
+        self.user_defined = False
 
     def get_unique_associations(self):
         unique_associations = self.column_associations + self.row_associations + self.grid_associations

@@ -99,42 +99,52 @@ class Gameboard:
 
     def input_1(self):
         self.active_cell.number = 1
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_2(self):
         self.active_cell.number = 2
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_3(self):
         self.active_cell.number = 3
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_4(self):
         self.active_cell.number = 4
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_5(self):
         self.active_cell.number = 5
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_6(self):
         self.active_cell.number = 6
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_7(self):
         self.active_cell.number = 7
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_8(self):
         self.active_cell.number = 8
+        self.active_cell.user_defined = True
         self.draw()
 
     def input_9(self):
         self.active_cell.number = 9
+        self.active_cell.user_defined = True
         self.draw()
 
     def spacebar(self):
         self.active_cell.number = None
+        self.active_cell.user_defined = False
         self.draw()
 
     def enter(self):
@@ -148,3 +158,54 @@ class Gameboard:
             elif cell.has_conflicts() == 0: # and if puzzle is full? 
                 self.graphics.write("Unable to solve puzzle", move=False, align="center", font=("Arial", 28, "normal")) 
                 self.graphics.color("black")
+
+    def performSetup(self, config):
+        for i, c in enumerate(config):
+            if c is not None:
+                self.cells[i].number = c
+                self.cells[i].user_defined = True
+
+
+    def gentleSetup(self):
+        setup = [
+            4, None, 1, None, 5, None, 6, None, 3,
+            None, 2, None, 1, None, 7, None, 4, 5,
+            6, None, 7, None, 3, None, 1, None, None,
+            5, None, 2, 3, None, 8, 9, None, 1,
+            None, 1, None, 2, 9, 5, None, 3, None,
+            3, None, 8, 6, None, 1, 7, None, 2,
+            None, None, 9, None, 2, None, 5, None, 7,
+            8, 6, None, 7, None, 3, None, 9, None,
+            2, None, 4, None, 8, None, 3, None, 6,
+        ]
+        self.performSetup(setup)
+
+    def easySetup(self):
+        setup = [
+            None, None, None, 5, None, 4, 7, None, None,
+            None, None, None, 3, 9, 6, 2, None, None,
+            5, 3, 2, None, 8, None, 4, None, None,
+            6, None, None, 7, None, 8, None, 2, None,
+            None, 8, 1, None, None, None, 5, 9, None,
+            None, 2, None, 9, None, 5, None, None, 7,
+            None, None, 4, None, 7, None, 6, 3, 1,
+            None, None, 6, 2, 4, 3, None, None, None,
+            None, None, 8, 6, None, 1, None, None, None,
+        ]
+        self.performSetup(setup)
+
+    def MediumSetup(self):
+        setup = [
+            None, None, None, None, 1, None, None, 3, 8,
+            None, None, 7, 4, None, None, None, None, None,
+            None, 5, None, None, None, None, None, None, 2,
+            None, 2, None, 7, None, None, 5, None, None,
+            8, 7, None, None, 3, None, None, 6, 1,
+            None, None, 9, None, None, 6, None, 8, None,
+            3, None, None, None, None, None, None, 1, None,
+            None, None, None, None, None, 9, 6, None, None,
+            2, 4, None, None, 8, None, None, None, None,
+        ]
+        self.performSetup(setup)
+
+       
