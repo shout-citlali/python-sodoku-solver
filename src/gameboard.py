@@ -3,7 +3,6 @@ from cell import Cell
 from solver import Solver
 
 
-
 class Gameboard:
     def __init__(self, graphics, screen):
         self.graphics = graphics
@@ -12,6 +11,9 @@ class Gameboard:
         self.screen.title("Sudoku Solver")
         self.screen.tracer(0)
         self.cells = []
+        self.error_message = None
+        self.empty_cells = None
+        self.possibilities = None
         for row in range(0, 9):
             for col in range(0, 9):
                 self.cells.append(Cell(row, col))
@@ -31,6 +33,15 @@ class Gameboard:
                 if grid_start_id + (i % 3) + (math.floor(i / 3) * 9) != cell.id:
                     cell.grid_associations.append(self.cells[grid_start_id + (i % 3) + (math.floor(i / 3) * 9)])
         self.active_cell = self.cells[0]
+
+
+    def puzzle_has_conflicts(self):
+        has_conflicts = False
+        for cell in self.cells:
+            if cell.has_conflicts() > 0:                
+                has_conflicts = True
+                break
+        return has_conflicts
         
 
     def draw(self):
@@ -76,8 +87,25 @@ class Gameboard:
             elif cell.user_defined:
                 self.graphics.color("green")
             self.graphics.goto(cell.column_id * 100 + 150, cell.row_id * 100 + 195,)
-            self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 40, "normal"))
+            self.graphics.write("" if cell.number == None else cell.number, move=False, align="center", font=("Arial", 96, "normal"))
+            if len(cell.possibilities) > 0:
+                self.graphics.color("gray")
+                for possibility in range(1, 10):
+                    if possibility in cell.possibilities:
+                        self.graphics.goto(cell.column_id * 100 + 120 + ((possibility - 1) % 3 * 30), cell.row_id * 100 + 130 + (math.floor((possibility - 1) / 3) * 30))
+                        self.graphics.write(possibility, move=False, align="center", font=("Arial", 24, "normal"))
             self.graphics.color("black")
+        if self.error_message is not None:
+            self.graphics.goto(570, 90)
+            self.graphics.color("red")
+            self.graphics.write(self.error_message, move=False, align="center", font=("Arial", 28, "normal"))
+            self.graphics.color("black")
+        # if self.empty_cells is not None:
+        #     self.graphics.goto(10, 20)
+        #     self.graphics.write(f"Empty Cells: {self.empty_cells}", move=False, align="left", font=("Arial", 18, "normal"))
+        #     self.graphics.goto(10, 40)
+        #     self.graphics.write(f"Possibilities: {self.possibilities}", move=False, align="left", font=("Arial", 18, "normal"))
+
         self.screen.update()
 
 
@@ -104,67 +132,85 @@ class Gameboard:
     def input_1(self):
         self.active_cell.number = 1
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_2(self):
         self.active_cell.number = 2
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_3(self):
         self.active_cell.number = 3
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_4(self):
         self.active_cell.number = 4
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_5(self):
         self.active_cell.number = 5
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_6(self):
         self.active_cell.number = 6
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_7(self):
         self.active_cell.number = 7
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_8(self):
         self.active_cell.number = 8
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def input_9(self):
         self.active_cell.number = 9
         self.active_cell.user_defined = True
+        self.error_message = None
         self.draw()
+
 
     def spacebar(self):
         self.active_cell.number = None
         self.active_cell.user_defined = False
+        self.error_message = None
         self.draw()
 
+
     def enter(self):
-        solver = Solver(self.cells)
-        solution = solver.solve()
+        self.error_message = None
+        if self.puzzle_has_conflicts():
+            self.error_message = "Unable to solve puzzle due to conflicts"
+        else:
+            solver = Solver(self.cells)
+            empty_cells, possibilities = solver.solve()
+            self.empty_cells = empty_cells
+            self.possibilities = possibilities
+            if empty_cells != 0:
+                self.error_message = "Unable to solve puzzle"
         self.draw()
-        # for cell in self.cells:
-        #     self.graphics.goto(570, 90)
-        #     self.graphics.color("red")            
-        #     if cell.has_conflicts() > 0:                
-        #         self.graphics.write("Unable to solve puzzle due to conflicts", move=False, align="center", font=("Arial", 28, "normal"))
-        #         self.graphics.color("black")
-        #         break
-        #     elif cell.has_conflicts() == 0: # and if puzzle is full? 
-        #         self.graphics.write("Unable to solve puzzle", move=False, align="center", font=("Arial", 28, "normal")) 
-        #         self.graphics.color("black")
 
     def performSetup(self, config):
         for i, c in enumerate(config):
@@ -187,6 +233,7 @@ class Gameboard:
         ]
         self.performSetup(setup)
 
+
     def easy_setup(self):
         setup = [
             None, None, None, 5, None, 4, 7, None, None,
@@ -201,6 +248,7 @@ class Gameboard:
         ]
         self.performSetup(setup)
 
+
     def medium_setup(self):
         setup = [
             None, None, None, None, 1, None, None, 3, 8,
@@ -212,6 +260,65 @@ class Gameboard:
             3, None, None, None, None, None, None, 1, None,
             None, None, None, None, None, 9, 6, None, None,
             2, 4, None, None, 8, None, None, None, None,
+        ]
+        self.performSetup(setup)
+
+    def hard_setup(self):
+        setup = [
+            None, 1, None, None, None, None, None, None, None,
+            None, None, None, 7, 8, None, None, 4, None,
+            None, None, None, 2, None, None, None, None, None,
+            2, None, 4, None, None, None, 6, None, None,
+            None, None, 7, None, 5, None, 8, None, None,
+            None, None, 3, None, None, None, 9, None, 1,
+            None, None, None, None, None, 9, None, None, None,
+            None, 6, None, None, 3, 1, None, None, None,
+            None, None, None, None, None, None, None, 7, None,
+        ]
+        self.performSetup(setup)
+
+
+    def expert_setup(self):
+        setup = [
+            None, 1, None, None, None, None, None, None, None,
+            None, None, None, 7, 8, None, None, 4, None,
+            None, None, None, 2, None, None, None, None, None,
+            2, None, 4, None, None, None, 6, None, None,
+            None, None, 7, None, 5, None, 8, None, None,
+            None, None, 3, None, None, None, 9, None, 1,
+            None, None, None, None, None, 9, None, None, None,
+            None, 6, None, None, 3, 1, None, None, None,
+            None, None, None, None, None, None, None, 7, None,
+        ]
+        self.performSetup(setup)
+
+
+    def extreme_setup(self):
+        setup = [
+            None, 5, None, None, 7, None, None, 8, 3,
+            None, None, 4, None, None, None, None, 6, None,
+            None, None, None, None, 5, None, None, None, None,
+            8, 3, None, 6, None, None, None, None, None,
+            None, None, None, 9, None, None, 1, None, None,
+            None, None, None, None, None, None, None, None, None,
+            5, None, 7, None, None, None, 4, None, None,
+            None, None, None, 3, None, 2, None, None, None,
+            1, None, None, None, None, None, None, None, None,
+        ]
+        self.performSetup(setup)
+
+
+    def impossible_setup(self):
+        setup = [
+            4, None, None, None, 3, None, None, None, None,
+            None, None, None, 6, None, None, 8, None, None,
+            None, None, None, None, None, None, None, None, 1,
+            None, None, None, None, 5, None, None, 9, None,
+            None, 8, None, None, None, None, 6, None, None,
+            None, 7, None, 2, None, None, None, None, None,
+            None, None, None, 1, None, 2, 7, None, None,
+            5, None, 3, None, None, None, None, 4, None,
+            9, None, None, None, None, None, None, None, None,
         ]
         self.performSetup(setup)
 

@@ -6,7 +6,7 @@ graphics = Turtle()
 screen = Screen()
 game_board = Gameboard(graphics, screen)
 
-game_board.easy_setup()
+game_board.impossible_setup()
 
 game_board.draw()
 
